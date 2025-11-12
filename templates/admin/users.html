@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+<h2>👥 Manage Users</h2>
+
+<div class="action-bar">
+  <a href="{{ url_for('admin.add_user') }}" class="btn add-btn">➕ Add User</a>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+      <td class="actions">
+        <a href="{{ url_for('admin.delete_user', user_id=user.id) }}" class="btn delete-btn"
+           onclick="return confirm('Are you sure you want to delete this user?');">🗑️ Delete</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="empty">No users found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<style>
+body {
+  background: linear-gradient(135deg, #1d2671, #c33764);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  margin: 30px 0;
+  color: #fff;
+}
+
+/* Add Button */
+.action-bar {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.add-btn {
+  background-color: #5b9bd5;
+}
+
+.add-btn:hover {
+  background-color: #4a86c5;
+  transform: translateY(-2px);
+}
+
+/* Table */
+.data-table {
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.data-table thead {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.data-table th, .data-table td {
+  padding: 14px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.data-table tr:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.empty {
+  text-align: center;
+  font-style: italic;
+  color: #ddd;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .data-table, .data-table thead, .data-table tbody, .data-table th, .data-table td, .data-table tr {
+    display: block;
+  }
+
+  .data-table tr {
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .data-table th {
+    display: none;
+  }
+
+  .data-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+  }
+
+  .data-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #fff;
+  }
+}
+</style>
+{% endblock %}

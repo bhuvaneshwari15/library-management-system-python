@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block title %}Available Books{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(to right, #e0f7fa, #e1bee7);
+    font-family: 'Poppins', sans-serif;
+  }
+
+  h2 {
+    text-align: center;
+    color: #4a148c;
+    margin-bottom: 20px;
+  }
+
+  .search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .search-form input[type="text"] {
+    padding: 10px;
+    width: 350px;
+    border: 1px solid #ccc;
+    border-radius: 25px 0 0 25px;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .search-form button {
+    background-color: #6a1b9a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 0 25px 25px 0;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .search-form button:hover {
+    background-color: #4a148c;
+  }
+
+  .data-table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .data-table thead {
+    background-color: #6a1b9a;
+    color: white;
+  }
+
+  .data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: center;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background-color: #f3e5f5;
+  }
+
+  .data-table tbody tr:hover {
+    background-color: #ede7f6;
+    transition: 0.3s;
+  }
+
+  .btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s;
+  }
+
+  .btn-primary {
+    background-color: #7b1fa2;
+  }
+
+  .btn-primary:hover {
+    background-color: #4a148c;
+  }
+
+  .text-muted {
+    color: #888;
+    font-style: italic;
+  }
+</style>
+
+<h2>📚 Available Books</h2>
+
+<form method="GET" action="{{ url_for('student.books') }}" class="search-form">
+  <input type="text" name="q" value="{{ query }}" placeholder="🔍 Search by title, author, or category...">
+  <button type="submit">Search</button>
+</form>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Category</th>
+      <th>Available</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books %}
+    <tr>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.category }}</td>
+      <td>{{ book.copies_available }}</td>
+      <td>
+        {% if book.copies_available > 0 %}
+          <a href="{{ url_for('student.borrow_book', book_id=book.id) }}" class="btn btn-primary">Borrow</a>
+        {% else %}
+          <span class="text-muted">Not available</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

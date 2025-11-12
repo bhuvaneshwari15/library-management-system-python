@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+<style>
+/* --------------------------
+   GLOBAL STYLE
+--------------------------- */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #f3f6fa;
+  color: #333;
+}
+
+/* --------------------------
+   DASHBOARD LAYOUT
+--------------------------- */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --------------------------
+   SIDEBAR
+--------------------------- */
+.sidebar {
+  width: 240px;
+  background-color: #0c49a3;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+  color: white;
+}
+
+.sidebar h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+}
+
+.sidebar a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin: 5px 0;
+  transition: background 0.3s ease, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar a:hover {
+  background-color: #3156c0;
+  transform: translateX(5px);
+}
+
+.sidebar i {
+  font-size: 1.1rem;
+}
+
+/* --------------------------
+   MAIN CONTENT
+--------------------------- */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------
+   HEADER / TOP BAR
+--------------------------- */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.topbar h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0c49a3;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile span {
+  font-weight: 600;
+  color: #333;
+}
+
+/* --------------------------
+   STATS CARDS
+--------------------------- */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.card {
+  flex: 1 1 260px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 5px solid #ffb347;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e67e22;
+}
+
+/* --------------------------
+   RESPONSIVE DESIGN
+--------------------------- */
+@media (max-width: 900px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .stats {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+</style>
+
+<!-- Font Awesome for Icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+<div class="dashboard">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>📘 Teacher Panel</h2>
+    <a href="{{ url_for('teacher.books') }}"><i class="fa-solid fa-book"></i> View Books</a>
+    <a href="{{ url_for('teacher.borrowed_books') }}"><i class="fa-solid fa-book-open"></i> Borrowed Books</a>
+    <a href="{{ url_for('teacher.recommend_book') }}"><i class="fa-solid fa-lightbulb"></i> Recommend Books</a>
+    <a href="{{ url_for('teacher.reports') }}"><i class="fa-solid fa-chart-line"></i> Reports</a>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="topbar">
+      <h2>Welcome, {{ current_user.name or current_user.username }} 👩‍🏫</h2>
+      <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/2922/2922506.png" alt="Teacher">
+        <span>{{ current_user.username }}</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card">
+        <h3>Total Books</h3>
+        <p>{{ total_books }}</p>
+      </div>
+      <div class="card">
+        <h3>Books Borrowed</h3>
+        <p>{{ borrowed_books }}</p>
+      </div>
+      <div class="card">
+        <h3>Books Recommended</h3>
+        <p>{{ recommended_books }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

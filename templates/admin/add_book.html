@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}Add Book{% endblock %}
+
+{% block content %}
+<h2>Add New Book</h2>
+
+<form method="POST" action="{{ url_for('admin.add_book') }}" class="book-form">
+  <label>ISBN:</label>
+  <input type="text" name="isbn" required>
+
+  <label>Title:</label>
+  <input type="text" name="title" required>
+
+  <label>Author:</label>
+  <input type="text" name="author" required>
+
+  <label>Publisher:</label>
+  <input type="text" name="publisher">
+
+  <label>Year:</label>
+  <input type="number" name="year" min="1900" max="2099">
+
+  <label>Total Copies:</label>
+  <input type="number" name="copies_total" value="1" min="1">
+
+  <label>Category:</label>
+  <input type="text" name="category">
+
+  <label>Description:</label>
+  <textarea name="description" rows="3"></textarea>
+
+  <button type="submit">Add Book</button>
+</form>
+
+<style>
+/* Form Container */
+.book-form {
+  max-width: 500px;
+  margin: 20px auto;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-family: Arial, sans-serif;
+}
+
+/* Headings */
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Labels */
+.book-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+/* Inputs & Textarea */
+.book-form input,
+.book-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.book-form input:focus,
+.book-form textarea:focus {
+  border-color: #5b9bd5;
+  box-shadow: 0 0 5px rgba(91,155,213,0.5);
+  outline: none;
+}
+
+/* Button */
+.book-form button {
+  padding: 12px;
+  background: #5b9bd5;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.book-form button:hover {
+  background: #4a86c5;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .book-form {
+    padding: 20px;
+  }
+}
+</style>
+{% endblock %}

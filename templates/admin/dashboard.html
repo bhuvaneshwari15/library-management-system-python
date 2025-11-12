@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(135deg, #1d2671, #c33764);
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+  }
+
+  .dashboard-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 50px auto;
+    width: 90%;
+    max-width: 1000px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  /* Stats Section */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 25px 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    min-width: 180px;
+  }
+
+  .card h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .card p {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Actions Section */
+  .actions {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    border: none;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  .btn-info {
+    background-color: #17a2b8;
+    color: #fff;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .stats {
+      flex-direction: column;
+      align-items: center;
+    }
+    .card {
+      width: 80%;
+    }
+  }
+</style>
+
+<div class="dashboard-container">
+  <h2>📚 Admin Dashboard</h2>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="card">
+      <h3>Total Books</h3>
+      <p>{{ total_books }}</p>
+    </div>
+    <div class="card">
+      <h3>Total Users</h3>
+      <p>{{ total_users }}</p>
+    </div>
+    <div class="card">
+      <h3>Borrowed Books</h3>
+      <p>{{ total_borrowed }}</p>
+    </div>
+    <div class="card">
+      <h3>Available Copies</h3>
+      <p>{{ total_available }}</p>
+    </div>
+    <div class="card">
+      <h3>Overdue Books</h3>
+      <p>{{ overdue }}</p>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="actions">
+    <a href="{{ url_for('admin.books') }}" class="btn btn-primary">📘 Manage Books</a>
+    <a href="{{ url_for('admin.users') }}" class="btn btn-secondary">👥 Manage Users</a>
+    <a href="{{ url_for('admin.reports') }}" class="btn btn-info">📊 View Reports</a>
+  </div>
+</div>
+{% endblock %}
