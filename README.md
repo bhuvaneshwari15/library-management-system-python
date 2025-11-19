@@ -1,28 +1,98 @@
-# Advanced Library Management System (Flask + MySQL)
-Skeleton project for an advanced LMS with roles: Admin, Teacher, Student.
 
-## What's included
-- Flask app with blueprint structure (auth, admin, teacher, student)
-- SQLAlchemy models for MySQL
-- Basic HTML templates (Jinja2)
-- Static assets (CSS, JS)
-- init_db.sql with schema + sample data
-- requirements.txt
+# 📚 Advanced Library Management System (Flask + MySQL + Chatbot)
 
-## How to run (local)
-1. Create a Python venv:
-   python3 -m venv venv
-   source venv/bin/activate
-2. Install requirements:
-   pip install -r requirements.txt
-3. Create MySQL database and user, then update `config.py` or set env var DATABASE_URL
-4. Initialize DB:
-   mysql -u root -p < init_db.sql
-   or use `flask db` migrations if you add Alembic
-5. Run:
-   export FLASK_APP=app.py
-   export FLASK_ENV=development
-   flask run
+A complete Library Management System built with **Flask**, featuring Admin/Teacher/Student roles, SQLAlchemy models, Flask-Migrate support, and a smart Chatbot that answers natural language queries.
 
-## Notes
-- This is a functional scaffold. Expand features (fine payments, email, search) based on provided models and blueprints.
+---
+
+## 1️⃣ Create Virtual Environment
+
+### **Windows**
+
+```powershell
+python -m venv venv
+.\venv\Scripts\activate
+```
+
+### **Mac/Linux**
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+---
+
+## 2️⃣ Install Dependencies
+
+```
+pip install -r requirements.txt
+```
+
+---
+
+## 3️⃣ Create MySQL Database
+
+Login to MySQL:
+
+```bash
+mysql -u root -p
+```
+
+Create the database:
+
+```sql
+CREATE DATABASE library_db;
+```
+
+---
+
+## 4️⃣ Configure Database in config.py
+
+Open **config.py** and update:
+
+```python
+DATABASE_URL = "mysql+pymysql://root:YOURPASSWORD@localhost/library_db"
+SECRET_KEY = "yoursecretkey"
+```
+
+Replace:
+
+* `YOURPASSWORD` → your MySQL root password
+* `yoursecretkey` → any random secret key
+
+---
+
+## 5️⃣ Initialize Database (Flask-Migrate)
+
+First, set the Flask application:
+
+### **Windows PowerShell**
+
+```powershell
+$env:FLASK_APP="manage.py"
+```
+
+### **Mac/Linux**
+
+```bash
+export FLASK_APP=manage.py
+```
+
+Now run:
+
+```bash
+flask db init
+flask db migrate -m "initial"
+flask db upgrade
+```
+
+This will create all required tables:
+
+* users
+* books
+* borrow_records
+* book_recommendations
+
+---
+
