@@ -1,3 +1,5 @@
+# type: ignore
+# pyright: ignore
 from app import create_app
 from extension import db
 from flask_migrate import Migrate

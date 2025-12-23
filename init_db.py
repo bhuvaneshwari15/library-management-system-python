@@ -1,4 +1,7 @@
 # init_db.py
+# type: ignore
+# pyright: ignore
+
 from app import create_app
 from extension import db
 from models import *
