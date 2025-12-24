@@ -1,8 +1,5 @@
-Here is the **README (Option A: MySQL)** **ONLY up to Step 5**, exactly as you requested.
 
-Copy–paste this into your README.md.
-
----
+this project used python 3.12 version
 
 # 📚 Advanced Library Management System (Flask + MySQL + Chatbot)
 
@@ -12,9 +9,7 @@ A complete Library Management System built with **Flask**, featuring Admin/Teach
 
 ## 🛠️ Installation & Setup (Option A – MySQL)
 
-Follow these steps **1 to 5** to set up the project with **MySQL**.
 
----
 
 ## 1️⃣ Create Virtual Environment
 
