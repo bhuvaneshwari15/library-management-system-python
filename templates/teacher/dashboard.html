@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/teacher-dashboard.css') }}" rel="stylesheet">
+
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h4>📘 Teacher Panel</h4>
+
+    <a href="{{ url_for('teacher.dashboard') }}" class="active">
+      <i class="bi bi-speedometer2"></i> Dashboard
+    </a>
+
+    <a href="{{ url_for('teacher.books') }}">
+      <i class="bi bi-book"></i> View Books
+    </a>
+
+    <a href="{{ url_for('teacher.borrowed_books') }}">
+      <i class="bi bi-bookmark-check"></i> Borrowed Books
+    </a>
+
+    <a href="{{ url_for('teacher.recommend_book') }}">
+      <i class="bi bi-lightbulb"></i> Recommend Books
+    </a>
+
+    <a href="{{ url_for('teacher.reports') }}">
+      <i class="bi bi-graph-up"></i> Reports
+    </a>
+
+    <hr>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="dashboard-panel">
+
+      <h4 class="mb-4">
+        Welcome, {{ current_user.name or current_user.username }} 👩‍🏫
+      </h4>
+
+      <!-- STATS (BOOTSTRAP ROW STYLE) -->
+      <div class="row g-4 mb-4">
+
+        <div class="col-xl-4 col-md-6">
+          <div class="stat-card stat-purple">
+            <h6>Total Books</h6>
+            <h2>{{ total_books }}</h2>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+          <div class="stat-card stat-blue">
+            <h6>Borrowed Books</h6>
+            <h2>{{ borrowed_books }}</h2>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+          <div class="stat-card stat-green">
+            <h6>Recommended</h6>
+            <h2>{{ recommended_books }}</h2>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

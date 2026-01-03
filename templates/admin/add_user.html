@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Add User{% endblock %}
+
+{% block content %}
+<h2>➕ Add New User</h2>
+
+<div class="glass-form-container">
+  <form method="POST" action="{{ url_for('admin.add_user') }}" class="user-form">
+
+    <label>Username *</label>
+    <input type="text" name="username" required minlength="3">
+
+    <label>Email *</label>
+    <input type="email" name="email" required>
+
+    <label>Password *</label>
+    <input type="password" name="password" required minlength="6">
+
+    <label>Role *</label>
+    <select name="role" required>
+      <option value="">Select role</option>
+      <option value="admin">Admin</option>
+      <option value="teacher">Teacher</option>
+      <option value="student">Student</option>
+    </select>
+
+    <button type="submit">Add User</button>
+  </form>
+</div>
+
+<style>
+body {
+  background: linear-gradient(135deg, #2b5876, #4e4376);
+  font-family: 'Poppins', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin: 30px 0;
+  color: white;
+}
+
+.glass-form-container {
+  max-width: 450px;
+  margin: auto;
+  padding: 25px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.user-form label {
+  color: white;
+  font-weight: 600;
+}
+
+.user-form input,
+.user-form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.user-form button {
+  margin-top: 10px;
+  padding: 12px;
+  background: #5b9bd5;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.user-form button:hover {
+  background: #4a86c5;
+}
+</style>
+{% endblock %}

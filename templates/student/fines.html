@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}My Fines{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(135deg, #f8bbd0, #b2dfdb);
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+  }
+
+  h2 {
+    text-align: center;
+    color: #880e4f;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .fine-box {
+    width: 60%;
+    margin: 40px auto;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .fine-box:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .fine-box p {
+    font-size: 1.2rem;
+    margin: 15px 0;
+  }
+
+  .fine-box strong {
+    color: #ad1457;
+    font-size: 1.3rem;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .no-fine {
+    font-size: 1.4rem;
+    color: #2e7d32;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    display: inline-block;
+    padding: 15px 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+</style>
+
+<h2>💰 My Fines</h2>
+
+{% if fine_total > 0 %}
+<div class="fine-box">
+  <p>Fine per day: ₹{{ fine_per_day }}</p>
+  <p><strong>Total Fine Due:</strong> ₹{{ fine_total }}</p>
+  <p>Please contact the librarian to clear your fines.</p>
+</div>
+{% else %}
+<div class="no-fine">
+  🎉 You have no pending fines!
+</div>
+{% endif %}
+{% endblock %}

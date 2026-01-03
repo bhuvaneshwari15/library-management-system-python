@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block title %}Available Books{% endblock %}
+
+{% block content %}
+<style>
+  /* General layout */
+  body {
+    background-color: #1f1f2e; /* dark professional background */
+    color: #ffffff; /* white text for visibility */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  form {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+  }
+
+  input[type="text"] {
+    padding: 10px 14px;
+    width: 300px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2c2c3c;
+    color: #ffffff;
+    transition: background-color 0.3s;
+  }
+
+  input[type="text"]::placeholder {
+    color: #bbbbbb;
+  }
+
+  input[type="text"]:focus {
+    outline: none; /* remove blue focus */
+    background-color: #3a3a50; /* subtle hover/focus effect */
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background-color: #357ab8;
+    transform: translateY(-2px);
+  }
+
+  /* Table styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #2c2c3c;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 14px;
+    border-bottom: 1px solid #444;
+    color: #ffffff;
+  }
+
+  th {
+    background-color: #3a3a50;
+    font-weight: 600;
+  }
+
+  tr:hover {
+    background-color: #45455e;
+  }
+
+  a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  span.unavailable {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .pagination a {
+    padding: 6px 12px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #4a90e2;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .pagination a:hover {
+    background-color: #4a90e2;
+    color: #ffffff;
+  }
+
+  .pagination span {
+    font-weight: bold;
+  }
+
+</style>
+
+<h2>📚 Available Books</h2>
+
+<form method="get" action="{{ url_for('teacher.books') }}">
+  <input type="text" name="q" placeholder="Search books..." value="{{ query }}">
+  <button type="submit">Search</button>
+</form>
+
+{% if books.items %}
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Category</th>
+      <th>Available Copies</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books.items %}
+    <tr>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.category }}</td>
+      <td>{{ book.copies_available }}</td>
+      <td>
+        {% if book.copies_available > 0 %}
+          <a href="{{ url_for('teacher.borrow_book', book_id=book.id) }}">Borrow</a>
+        {% else %}
+          <span class="unavailable">Unavailable</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="pagination">
+  {% if books.has_prev %}
+    <a href="{{ url_for('teacher.books', page=books.prev_num, q=query) }}">Previous</a>
+  {% endif %}
+  <span>Page {{ books.page }} of {{ books.pages }}</span>
+  {% if books.has_next %}
+    <a href="{{ url_for('teacher.books', page=books.next_num, q=query) }}">Next</a>
+  {% endif %}
+</div>
+
+{% else %}
+<p>No books found.</p>
+{% endif %}
+{% endblock %}

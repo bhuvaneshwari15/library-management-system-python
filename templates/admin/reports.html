@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+  <h2>📊 Borrowed Books Report</h2>
+
+  {% if borrowed_books %}
+    <table>
+      <thead>
+        <tr>
+          <th>Book Title</th>
+          <th>Borrower</th>
+          <th>Borrow Date</th>
+          <th>Due Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in borrowed_books %}
+        <tr>
+          <td>{{ record.book.title }}</td>
+          <td>{{ record.user.username }}</td>
+          <td>{{ record.borrow_date.strftime('%Y-%m-%d') }}</td>
+          <td>{{ record.due_date.strftime('%Y-%m-%d') }}</td>
+          <td>
+            {% if record.returned %}
+              ✅ Returned
+            {% elif record.due_date < current_date %}
+              ⚠️ Overdue
+            {% else %}
+              ⏳ Borrowed
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No borrowed book records found.</p>
+  {% endif %}
+</div>
+
+<style>
+  body {
+    background: linear-gradient(135deg, #1d2671, #c33764);
+    min-height: 100vh;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .dashboard-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 50px auto;
+    width: 90%;
+    max-width: 1000px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+  }
+
+  th {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  tr:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+</style>
+{% endblock %}

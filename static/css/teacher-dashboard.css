@@ -1,0 +1,168 @@
+/* =====================================================
+   CSS VARIABLES & THEMES
+===================================================== */
+:root {
+  --bg: #f4f6f9;
+  --sidebar: #ffffff;
+  --card: #ffffff;
+  --text: #212529;
+  --accent: #4c6ef5; /* teacher accent */
+}
+
+body.dark {
+  --bg: #121212;
+  --sidebar: #1e1e1e;
+  --card: #1f1f1f;
+  --text: #ffffff;
+}
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+}
+
+main {
+  background: var(--bg) !important;
+  max-width: 100% !important;
+}
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+.sidebar {
+  width: 250px;
+  background: var(--sidebar);
+  padding: 20px;
+  flex-shrink: 0; /* prevents spacing bug */
+}
+
+.sidebar h4 {
+  margin-bottom: 20px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+.main-content {
+  flex: 1;
+  padding: 32px;
+  background: var(--bg);
+}
+
+/* Center dashboard content */
+.dashboard-panel {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   STATS / CARDS
+===================================================== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* EVEN spacing */
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.stat-card,
+.chart-card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* Accent borders */
+.stat-purple { border-left: 6px solid #845ef7; }
+.stat-blue   { border-left: 6px solid #339af0; }
+.stat-green  { border-left: 6px solid #51cf66; }
+
+/* =====================================================
+   TABLET (≤1024px)
+===================================================== */
+@media (max-width: 1024px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =====================================================
+   MOBILE (≤768px)
+===================================================== */
+@media (max-width: 768px) {
+
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: relative;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================
+   SMALL PHONES (≤480px)
+===================================================== */
+@media (max-width: 480px) {
+  .stat-card h2 {
+    font-size: 1.3rem;
+  }
+
+  .stat-card h6 {
+    font-size: 0.85rem;
+  }
+}

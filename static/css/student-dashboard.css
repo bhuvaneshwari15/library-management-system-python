@@ -1,0 +1,164 @@
+/* =====================================================
+   CSS VARIABLES & THEMES
+===================================================== */
+:root {
+  --bg: #f4f6f9;
+  --sidebar: #ffffff;
+  --card: #ffffff;
+  --text: #212529;
+  --accent: #20c997;   /* student accent */
+}
+
+body.dark {
+  --bg: #121212;
+  --sidebar: #1e1e1e;
+  --card: #1f1f1f;
+  --text: #ffffff;
+}
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+body {
+  color: var(--text);
+}
+
+main {
+  background: var(--bg) !important;
+  max-width: 100% !important;
+}
+
+/* =====================================================
+   LAYOUT (DESKTOP)
+===================================================== */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1400px;   /* same wide feel as admin */
+  margin: 0 auto;
+}
+
+/* =====================================================
+   SIDEBAR (ADMIN STYLE)
+===================================================== */
+.sidebar {
+  width: 250px;
+  background: var(--sidebar);
+  padding: 20px;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar.collapsed span {
+  display: none;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.sidebar.collapsed a {
+  justify-content: center;
+}
+
+.sidebar.collapsed i {
+  font-size: 1.4rem;
+}
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+.main-content {
+  flex: 1;
+  padding: 24px;
+}
+
+/* =====================================================
+   STATS / CARDS
+===================================================== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* Accent borders */
+.stat-purple { border-left: 6px solid #845ef7; }
+.stat-blue   { border-left: 6px solid #339af0; }
+.stat-red    { border-left: 6px solid #fa5252; }
+
+/* =====================================================
+   MOBILE & TABLET
+===================================================== */
+@media (max-width: 768px) {
+
+  .dashboard-layout {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  /* Sidebar off-canvas */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 250px;
+    height: 100vh;
+    z-index: 1100;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.25);
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+
+  .main-content {
+    padding: 16px;
+  }
+
+  .stat-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .stat-card h6 {
+    font-size: 0.9rem;
+  }
+}
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+@media (max-width: 480px) {
+  .stat-card h2 {
+    font-size: 1.25rem;
+  }
+}

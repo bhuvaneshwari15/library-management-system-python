@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Class Reading Report{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #1f1f2e;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2c2c3c;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    padding: 14px;
+    border-bottom: 1px solid #444;
+    color: #ffffff;
+    text-align: left;
+  }
+
+  th {
+    background-color: #3a3a50;
+    font-weight: 600;
+  }
+
+  tr:hover {
+    background-color: #45455e;
+  }
+
+  span.status-borrowed {
+    color: #f1c40f;
+    font-weight: bold;
+  }
+
+  span.status-returned {
+    color: #2ecc71;
+    font-weight: bold;
+  }
+</style>
+
+<h2>📊 Class Reading Report</h2>
+
+{% if borrowed_books %}
+<table>
+  <thead>
+    <tr>
+      <th>Student Name</th>
+      <th>Book Title</th>
+      <th>Borrow Date</th>
+      <th>Due Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in borrowed_books %}
+    <tr>
+      <td>{{ record.user.name or record.user.username }}</td>
+      <td>{{ record.book.title }}</td>
+      <td>{{ record.borrow_date.strftime('%Y-%m-%d') }}</td>
+      <td>{{ record.due_date.strftime('%Y-%m-%d') }}</td>
+      <td>
+        {% if record.returned %}
+          <span class="status-returned">✅ Returned</span>
+        {% else %}
+          <span class="status-borrowed">⏳ Borrowed</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No student borrow records available.</p>
+{% endif %}
+{% endblock %}
