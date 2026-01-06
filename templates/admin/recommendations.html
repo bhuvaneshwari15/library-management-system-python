@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}Book Recommendations{% endblock %}
+
+{% block content %}
+
+<style>
+  .rec-card {
+    background: var(--card, #ffffff);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  body.dark .rec-card {
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.05);
+  }
+
+  .rec-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background-color: #3a3a50;
+    color: #ffffff;
+  }
+
+  body:not(.dark) thead {
+    background-color: #f1f3f5;
+    color: #212529;
+  }
+
+  th, td {
+    padding: 14px;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #444;
+  }
+
+  body:not(.dark) tbody tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  tbody tr:hover {
+    background-color: rgba(111, 66, 193, 0.08);
+  }
+
+  .reason-cell {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .badge {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    text-transform: capitalize;
+  }
+
+  .btn-action {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+
+  .btn-success {
+    background-color: #198754;
+    border: none;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border: none;
+  }
+
+  .btn-success:hover {
+    background-color: #157347;
+  }
+
+  .btn-danger:hover {
+    background-color: #bb2d3b;
+  }
+</style>
+
+<div class="rec-card">
+  <h4 class="rec-title">📖 Book Recommendations</h4>
+
+  {% if recommendations %}
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>User</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th style="width: 160px;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in recommendations %}
+        <tr>
+          <td>{{ r.title }}</td>
+          <td>{{ r.author }}</td>
+          <td>{{ r.user.username }}</td>
+          <td class="reason-cell" title="{{ r.reason }}">
+            {{ r.reason }}
+          </td>
+          <td>
+            <span class="badge
+              {% if r.status == 'approved' %}bg-success
+              {% elif r.status == 'rejected' %}bg-danger
+              {% else %}bg-warning text-dark{% endif %}">
+              {{ r.status }}
+            </span>
+          </td>
+          <td>
+            {% if r.status == "pending" %}
+              <a href="{{ url_for('admin.update_recommendation_status', rec_id=r.id, action='approved') }}"
+                 class="btn btn-success btn-action">
+                 Approve
+              </a>
+              <a href="{{ url_for('admin.update_recommendation_status', rec_id=r.id, action='rejected') }}"
+                 class="btn btn-danger btn-action ms-1">
+                 Reject
+              </a>
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p class="text-muted">No book recommendations found.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

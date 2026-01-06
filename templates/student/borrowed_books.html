@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}My Borrowed Books{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(135deg, #d1c4e9, #b2ebf2);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+  }
+
+  h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .data-table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .data-table thead {
+    background-color: rgba(74, 20, 140, 0.9);
+    color: #fff;
+  }
+
+  .data-table th, .data-table td {
+    padding: 14px 18px;
+    text-align: center;
+    color: #fff;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .data-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transition: 0.3s;
+  }
+
+  .btn {
+    padding: 8px 15px;
+    background-color: #7b1fa2;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #4a148c;
+    transform: scale(1.05);
+  }
+
+  .btn.small {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .returned {
+    color: #b9f6ca;
+    font-weight: bold;
+  }
+
+  .borrowed {
+    color: #b3e5fc;
+    font-weight: bold;
+  }
+
+  .overdue {
+    color: #ff8a80;
+    font-weight: bold;
+    animation: blink 1.2s infinite alternate;
+  }
+
+  @keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+
+  .disabled {
+    color: #e0e0e0;
+    font-size: 1.2rem;
+  }
+
+  .empty {
+    text-align: center;
+    font-style: italic;
+    color: #fff;
+    padding: 20px;
+  }
+</style>
+
+<h2>📘 My Borrowed Books</h2>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Borrowed On</th>
+      <th>Due Date</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in records %}
+    <tr>
+      <td>{{ record.book.title }}</td>
+      <td>{{ record.borrow_date.strftime('%Y-%m-%d') }}</td>
+      <td>{{ record.due_date.strftime('%Y-%m-%d') }}</td>
+      <td>
+        {% if record.returned %}
+          <span class="returned">Returned</span>
+        {% elif record.due_date.date() < now %}
+          <span class="overdue">Overdue</span>
+        {% else %}
+          <span class="borrowed">Borrowed</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if not record.returned %}
+          <a href="{{ url_for('student.return_book', record_id=record.id) }}"
+             class="btn small">Return</a>
+        {% else %}
+          <span class="disabled">✓</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="5" class="empty">No borrowed books found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

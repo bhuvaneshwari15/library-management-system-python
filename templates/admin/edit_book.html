@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% block title %}Edit Book{% endblock %}
+
+{% block content %}
+<h2>Edit Book</h2>
+
+<div class="book-form-container">
+  <form method="POST"
+        action="{{ url_for('admin.edit_book', book_id=book.id) }}"
+        class="book-form"
+        enctype="multipart/form-data">
+
+    <!-- ISBN -->
+    <label>ISBN</label>
+    <input type="text"
+           name="isbn"
+           id="isbn"
+           value="{{ book.isbn }}"
+           maxlength="20">
+
+    <!-- Book Cover -->
+    <label>Book Cover</label>
+
+    <div class="cover-preview-wrapper">
+      {% if book.cover_url %}
+        <img id="coverPreview" src="{{ book.cover_url }}" alt="Book Cover">
+        <p id="coverStatus">Current cover</p>
+      {% else %}
+        <img id="coverPreview" alt="Book Cover">
+        <p id="coverStatus">Cover will be fetched using ISBN</p>
+      {% endif %}
+    </div>
+
+    <input type="file"
+           name="cover_image"
+           id="coverUpload"
+           accept="image/*">
+
+    <!-- Title -->
+    <label>Title *</label>
+    <input type="text" name="title" value="{{ book.title }}" required>
+
+    <!-- Author -->
+    <label>Author *</label>
+    <input type="text" name="author" value="{{ book.author }}" required>
+
+    <!-- Publisher -->
+    <label>Publisher</label>
+    <input type="text" name="publisher" value="{{ book.publisher }}">
+
+    <!-- Year -->
+    <label>Publication Year</label>
+    <input type="number" name="year" value="{{ book.year }}">
+
+    <!-- Copies -->
+    <label>Total Copies</label>
+    <input type="number" name="copies_total" value="{{ book.copies_total }}">
+
+    <!-- Category -->
+    <label>Category</label>
+    <input type="text" name="category" value="{{ book.category }}">
+
+    <!-- Description -->
+    <label>Description</label>
+    <textarea name="description" rows="3">{{ book.description }}</textarea>
+
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+const isbnInput = document.getElementById("isbn");
+const coverImg = document.getElementById("coverPreview");
+const coverStatus = document.getElementById("coverStatus");
+const coverUpload = document.getElementById("coverUpload");
+
+isbnInput.addEventListener("blur", () => {
+  const isbn = isbnInput.value.trim();
+  if (!isbn) return;
+
+  // ✅ Correct JavaScript (NOT Python)
+  const coverUrl =
+    `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
+
+  const testImg = new Image();
+
+  testImg.onload = () => {
+    coverImg.src = coverUrl;
+    coverImg.style.display = "block";
+    coverStatus.innerText = "Cover fetched from web ✔";
+  };
+
+  testImg.onerror = () => {
+    coverStatus.innerText =
+      "Cover not found. Upload manually if needed.";
+  };
+
+  testImg.src = coverUrl;
+});
+</script>
+
+<!--Hide upload input until needed:
+<script>
+coverUpload.style.display = "none";
+</script>-->
+
+
+<!-- ================= STYLE ================= -->
+<style>
+/* ---------- PAGE ---------- */
+body {
+  background: linear-gradient(135deg, #2b5876, #4e4376);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ---------- HEADING ---------- */
+h2 {
+  text-align: center;
+  margin: 30px 0;
+  color: white;
+}
+
+/* ---------- FORM CONTAINER ---------- */
+.book-form-container {
+  max-width: 520px;
+  margin: auto;
+  padding: 25px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+
+/* ---------- FORM ---------- */
+.book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.book-form label {
+  font-weight: 600;
+  color: #fff;
+}
+
+.book-form input,
+.book-form textarea {
+  padding: 11px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  outline: none;
+}
+
+.book-form input:focus,
+.book-form textarea:focus {
+  box-shadow: 0 0 0 2px rgba(91,155,213,0.7);
+}
+
+/* ---------- COVER ---------- */
+.cover-preview-wrapper {
+  text-align: center;
+}
+
+.cover-preview-wrapper img {
+  max-width: 160px;
+  margin: 10px auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+#coverStatus {
+  font-size: 13px;
+  color: #eee;
+}
+
+/* ---------- BUTTON ---------- */
+.book-form button {
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(91,155,213,0.95);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.book-form button:hover {
+  background: rgba(74,134,197,1);
+  transform: translateY(-2px);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 600px) {
+  .book-form-container {
+    padding: 18px;
+  }
+}
+</style>
+{% endblock %}

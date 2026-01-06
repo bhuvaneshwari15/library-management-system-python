@@ -1,0 +1,243 @@
+/* =====================================================
+   CSS VARIABLES & THEMES
+===================================================== */
+:root {
+  --bg: #f4f6f9;
+  --sidebar: #ffffff;
+  --card: #ffffff;
+  --text: #212529;
+  --accent: #20c997;
+}
+
+body.dark {
+  --bg: #121212;
+  --sidebar: #1e1e1e;
+  --card: #1f1f1f;
+  --text: #ffffff;
+}
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+body {
+  color: var(--text);
+}
+
+main {
+  background: var(--bg) !important;
+  max-width: 100% !important;
+}
+
+/* =====================================================
+   LAYOUT (DESKTOP DEFAULT)
+===================================================== */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   SIDEBAR (DESKTOP)
+===================================================== */
+.sidebar {
+  width: 250px;
+  background: var(--sidebar);
+  padding: 20px;
+}
+
+.sidebar h4 {
+  margin-bottom: 20px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 6px;
+  transition: background 0.2s ease;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+.main-content {
+  flex: 1;
+  padding: 24px;
+}
+
+/* =====================================================
+   STATS / CARDS
+===================================================== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.stat-card {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  transition: transform .2s ease, box-shadow .2s ease;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* horizontal center */
+  justify-content: center; /* vertical center */
+  text-align: center;
+}
+
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.stat-card h6 {
+  margin-bottom: 6px;
+  opacity: 0.9;
+}
+
+.stat-card h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Accent cards */
+.stat-purple { background: #845ef7; color: #fff; }
+.stat-blue   { background: #339af0; color: #fff; }
+.stat-red    { background: #fa5252; color: #fff; }
+
+body.dark .stat-purple { background: #2b2452; }
+body.dark .stat-blue   { background: #1e2a3a; }
+body.dark .stat-red    { background: #3a1e22; }
+
+/* =====================================================
+   MOBILE & TABLET (≤ 760px)
+   👉 DASHBOARD FIRST, SIDEBAR BELOW
+===================================================== */
+@media (max-width: 760px) {
+
+  .dashboard-layout {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  /* MAIN CONTENT ON TOP */
+  .main-content {
+    order: 1;
+    padding: 16px;
+  }
+
+  /* SIDEBAR BELOW DASHBOARD */
+  .sidebar {
+    order: 2;
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    box-shadow: none;
+  }
+
+  .sidebar h4 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .sidebar a {
+    flex: 1 1 45%;
+    justify-content: center;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  /* STATS STACK */
+  .stat-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .stat-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .stat-card h6 {
+    font-size: 0.9rem;
+  }
+}
+
+/* =====================================================
+   TABLETS (761px – 1024px)
+===================================================== */
+@media (min-width: 761px) and (max-width: 1024px) {
+
+  .dashboard-layout {
+    max-width: 100%;
+  }
+
+  .sidebar {
+    width: 220px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =====================================================
+   LARGE SCREENS (≥ 1200px)
+===================================================== */
+@media (min-width: 1200px) {
+
+  .main-content {
+    padding: 40px;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dashboard-panel {
+    max-width: 1200px;
+    margin: auto;
+  }
+}
+
+/* =====================================================
+   SMALL PHONES (≤ 480px)
+===================================================== */
+@media (max-width: 480px) {
+
+  .sidebar a {
+    flex: 1 1 100%;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-card h2 {
+    font-size: 1.25rem;
+  }
+}

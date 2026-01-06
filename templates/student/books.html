@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% block title %}Available Books{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(to right, #e0f7fa, #e1bee7);
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .page-wrapper {
+    padding: 40px 0;
+  }
+
+  .content {
+    max-width: 1400px;
+    margin: auto;
+    padding: 0 30px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #4a148c;
+    margin-bottom: 30px;
+    font-size: 32px;
+  }
+
+  .search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .search-form input {
+    padding: 14px 18px;
+    width: 420px;
+    border-radius: 30px 0 0 30px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .category-filter {
+    padding: 14px 16px;
+    border: none;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+  }
+
+  .books-container {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+  }
+
+  .category-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #4a148c;
+    margin-bottom: 15px;
+  }
+
+.books-row {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.books-row::-webkit-scrollbar {
+  display: none;
+}
+
+
+  .book-card {
+    width: 190px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    text-align: center;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .book-cover {
+    width: 115px;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 18px;
+    background: #7b1fa2;
+    color: white;
+    border-radius: 18px;
+    text-decoration: none;
+  }
+
+  .book-info {
+    flex-grow: 1;
+  }
+
+  .btn,
+  .text-muted {
+    margin-top: auto;
+  }
+  /* ============================= */
+/* 📱 Mobile devices (≤ 576px)   */
+/* ============================= */
+@media (max-width: 576px) {
+  .search-form {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-form input,
+  .category-filter {
+    width: 100%;
+    border-radius: 30px;
+  }
+
+  .content {
+    padding: 0 15px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .category-title {
+    font-size: 18px;
+  }
+
+  .book-card {
+    width: 150px;
+    padding: 12px;
+  }
+
+  .book-cover {
+    width: 95px;
+    height: 140px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+}
+
+/* ============================= */
+/* 📱 Tablets (577px – 768px)   */
+/* ============================= */
+@media (min-width: 577px) and (max-width: 768px) {
+  .content {
+    padding: 0 20px;
+  }
+
+  .book-card {
+    width: 165px;
+  }
+
+  .book-cover {
+    width: 105px;
+    height: 155px;
+  }
+}
+
+/* ============================= */
+/* 💻 Small laptops (769px – 992px) */
+/* ============================= */
+@media (min-width: 769px) and (max-width: 992px) {
+  .content {
+    padding: 0 25px;
+  }
+
+  .book-card {
+    width: 175px;
+  }
+}
+
+/* ============================= */
+/* 🖥️ Large screens (≥ 1200px) */
+/* ============================= */
+@media (min-width: 1200px) {
+  .content {
+    max-width: 1600px;
+  }
+}
+
+</style>
+
+<div class="page-wrapper">
+  <div class="content">
+
+    <h2>📚 Available Books</h2>
+
+    <div class="search-form">
+      <input type="text" id="searchInput" placeholder="Search books..." value="{{ query }}">
+      <select id="categoryFilter" class="category-filter">
+        <option value="">All Categories</option>
+        {% for category in categorized_books.keys() %}
+        <option value="{{ category }}" {% if selected_category==category %}selected{% endif %}>
+          {{ category }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div id="books-results">
+      <div class="books-container">
+        {% for category, books in categorized_books.items() %}
+        <div>
+          <div class="category-title">{{ category }}</div>
+          <div class="books-row">
+            {% for book in books %}
+            <div class="book-card">
+              <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-L.jpg"
+                onerror="this.src='https://via.placeholder.com/115x170?text=No+Cover'" class="book-cover">
+              <div class="book-info">
+                <div class="book-title">{{ book.title }}</div>
+                <div class="book-author">{{ book.author }}</div>
+              </div>
+
+              {% if book.copies_available > 0 %}
+              <a href="{{ url_for('student.borrow_book', book_id=book.id) }}" class="btn">Borrow</a>
+              {% else %}
+              <button class="btn btn-disabled" disabled>Not Available</button>
+              <!-- <div style="color:#888;">Out of stock</div> -->
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById("searchInput");
+  const categoryFilter = document.getElementById("categoryFilter");
+  const resultsDiv = document.getElementById("books-results");
+
+  function debounce(fn, delay = 400) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  }
+
+  function fetchBooks() {
+    const q = searchInput.value;
+    const category = categoryFilter.value;
+
+    fetch(`/student/books?q=${encodeURIComponent(q)}&category=${encodeURIComponent(category)}`)
+      .then(res => res.text())
+      .then(html => {
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+        const newResults = temp.querySelector("#books-results");
+        if (newResults) {
+          resultsDiv.innerHTML = newResults.innerHTML;
+        }
+      });
+  }
+
+  const debouncedFetch = debounce(fetchBooks);
+  searchInput.addEventListener("keyup", debouncedFetch);
+  categoryFilter.addEventListener("change", fetchBooks);
+</script>
+
+{% endblock %}

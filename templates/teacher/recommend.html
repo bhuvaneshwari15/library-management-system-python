@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}Recommend Books{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #1f1f2e;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h2, h3 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  form {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  label {
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  textarea {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2c2c3c;
+    color: #ffffff;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+
+  input[type="text"]::placeholder,
+  textarea::placeholder {
+    color: #bbbbbb;
+  }
+
+  input[type="text"]:focus,
+  textarea:focus {
+    outline: none; /* remove focus outline */
+    background-color: #3a3a50;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    align-self: flex-start;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background-color: #357ab8;
+    transform: translateY(-2px);
+  }
+
+  hr {
+    border: 0.5px solid #444;
+    margin: 30px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2c2c3c;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  th, td {
+    padding: 14px;
+    border-bottom: 1px solid #444;
+    color: #ffffff;
+    text-align: left;
+  }
+
+  th {
+    background-color: #3a3a50;
+    font-weight: 600;
+  }
+
+  tr:hover {
+    background-color: #45455e;
+  }
+</style>
+
+<h2>💡 Recommend a Book</h2>
+
+<form method="post">
+  <div>
+    <label>Book Title:</label>
+    <input type="text" name="title" placeholder="Enter book title" required>
+  </div>
+
+  <div>
+    <label>Author:</label>
+    <input type="text" name="author" placeholder="Enter author's name" required>
+  </div>
+
+  <div>
+    <label>Reason for Recommendation:</label>
+    <textarea name="reason" rows="3" placeholder="Why do you recommend this book?" required></textarea>
+  </div>
+
+  <button type="submit">Submit Recommendation</button>
+</form>
+
+<hr>
+
+<h3>Your Previous Recommendations</h3>
+
+{% if recommendations %}
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Reason</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in recommendations %}
+    <tr>
+      <td>{{ r.title }}</td>
+      <td>{{ r.author }}</td>
+      <td>{{ r.reason }}</td>
+      <td>{{ r.date.strftime('%Y-%m-%d') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No recommendations yet.</p>
+{% endif %}
+{% endblock %}

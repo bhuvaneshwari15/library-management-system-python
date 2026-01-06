@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}Register - Library{% endblock %}
+
+{% block content %}
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+  <div class="register-card p-5" style="max-width: 400px; width: 100%;">
+    <h2 class="mb-4 fw-bold text-center">Create an Account</h2>
+    <p class="mb-4 text-center">Fill in your details to register your account.</p>
+    <form method="POST" action="{{ url_for('auth.register') }}">
+      <div class="mb-3">
+        <label for="username" class="form-label fw-semibold">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username"
+          required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label fw-semibold">Email</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">Password</label>
+        <div class="input-group">
+          <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password"
+            required>
+          <span class="input-group-text bg-transparent border-0">
+            <i class="bi bi-eye-fill text-white" id="togglePassword" style="cursor: pointer;"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="role" class="form-label fw-semibold">Role</label>
+        <select id="role" name="role" class="form-select">
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+      <p class="text-center">Already have an account?
+        <a href="{{ url_for('auth.login') }}" class="fw-bold">Login here</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<style>
+  body {
+    background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  /* Glass card */
+  .register-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .register-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Form styling */
+  .form-control,
+  .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 0.55rem 0.75rem;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+
+  .form-control::placeholder,
+  .form-select option {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    outline: none;
+  }
+
+  .btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+
+  a:hover {
+    color: #ddd;
+    text-decoration: underline;
+  }
+
+  .input-group-text i {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+
+  .input-group-text i:hover {
+    opacity: 1;
+  }
+</style>
+<script>
+  const togglePassword = document.getElementById("togglePassword");
+  const passwordInput = document.getElementById("password");
+
+  togglePassword.addEventListener("click", function () {
+    const isPassword = passwordInput.type === "password";
+    passwordInput.type = isPassword ? "text" : "password";
+
+    this.classList.toggle("bi-eye-fill");
+    this.classList.toggle("bi-eye-slash-fill");
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% block title %}Manage Books{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">📚 Books Management</h2>
+
+<div class="action-bar">
+  <a href="{{ url_for('admin.add_book') }}" class="btn add-btn">➕ Add New Book</a>
+</div>
+
+<!-- ================= GLASS CONTAINER ================= -->
+<div class="glass-container">
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Cover</th>
+          <th>ISBN</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Publisher</th>
+          <th>Year</th>
+          <th>Total</th>
+          <th>Available</th>
+          <th>Category</th>
+          <th>Rating</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+        {% for book in books %}
+        <tr>
+          <td data-label="Cover">
+            {% if book.cover_url %}
+            <img src="{{ book.cover_url }}" alt="Cover" class="book-cover">
+            {% else %}
+            <span class="no-cover">—</span>
+            {% endif %}
+          </td>
+          <td data-label="ISBN">{{ book.isbn or "—" }}</td>
+          <td data-label="Title">{{ book.title }}</td>
+          <td data-label="Author">{{ book.author }}</td>
+          <td data-label="Publisher">{{ book.publisher }}</td>
+          <td data-label="Year">{{ book.year }}</td>
+          <td data-label="Total">{{ book.copies_total }}</td>
+          <td data-label="Available">{{ book.copies_available }}</td>
+          <td data-label="Category">{{ book.category }}</td>
+          <td data-label="Rating">
+            {% if book.rating and book.rating > 0 %}
+            {% for i in range(book.rating) %}
+            ⭐
+            {% endfor %}
+            {% else %}
+            <span class="no-rating">—</span>
+            {% endif %}
+          </td>
+          <td data-label="Actions">
+            <div class="actions">
+              <a href="{{ url_for('admin.edit_book', book_id=book.id) }}" class="btn edit-btn" title="Edit book">✏️</a>
+
+              <a href="{{ url_for('admin.delete_book', book_id=book.id) }}" class="btn delete-btn" title="Delete book"
+                onclick="return confirm('Delete this book permanently?');">
+                🗑️
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="11" class="empty">No books found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================= STYLES ================= -->
+<style>
+  /* -------- PAGE -------- */
+  body {
+    background: linear-gradient(135deg, #2b5876, #4e4376);
+    min-height: 100vh;
+    font-family: "Poppins", system-ui, sans-serif;
+    color: #ffffff;
+  }
+
+  /* ================= BOOK COVER ================= */
+  .book-cover {
+    width: 55px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .no-cover {
+    font-size: 20px;
+    opacity: 0.6;
+  }
+
+
+  /* -------- TITLE -------- */
+  .page-title {
+    text-align: center;
+    margin: 30px 0 20px;
+    font-weight: 600;
+  }
+
+  /* -------- ACTION BAR -------- */
+  .action-bar {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  /* -------- BUTTONS -------- */
+  .btn {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s ease, filter .2s ease;
+  }
+
+  .add-btn {
+    background: rgba(91, 155, 213, .9);
+  }
+
+  .edit-btn {
+    background: rgba(46, 204, 113, .85);
+  }
+
+  .delete-btn {
+    background: rgba(231, 76, 60, .85);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.15);
+  }
+
+  /* ================= GLASS CONTAINER ================= */
+  .glass-container {
+    width: 100%;
+    margin: 0 auto 40px;
+    padding: 16px;
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+
+    overflow: visible;
+  }
+
+  /* ================= TABLE WRAPPER ================= */
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    border-radius: 12px;
+  }
+
+  /* ================= TABLE ================= */
+  .data-table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+
+  /* ================= TABLE CELLS ================= */
+  .data-table th,
+  .data-table td {
+    padding: 14px 16px;
+    text-align: center;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  /* ================= HEADER ================= */
+  .data-table thead {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* ================= ROW HOVER ================= */
+  .data-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  /* ================= EMPTY ================= */
+  .empty {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ================= ACTIONS ================= */
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* ================= MOBILE ================= */
+  @media (max-width: 768px) {
+    .data-table {
+      min-width: unset;
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tbody tr {
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 14px;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    tbody td {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 10px;
+      white-space: normal;
+    }
+
+    tbody td::before {
+      content: attr(data-label);
+      font-weight: 600;
+    }
+  }
+  .no-rating {
+  opacity: 0.6;
+  font-size: 18px;
+}
+
+</style>
+
+{% endblock %}

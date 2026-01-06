@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/student-dashboard.css') }}" rel="stylesheet">
+
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR  -->
+  <div class="sidebar">
+    <h4>📘 Library</h4>
+
+    <a href="{{ url_for('student.dashboard') }}" class="active">
+      <i class="bi bi-speedometer2"></i> Dashboard
+    </a>
+
+    <a href="{{ url_for('student.books') }}">
+      <i class="bi bi-book"></i> Browse Books
+    </a>
+
+    <a href="{{ url_for('student.borrowed_books') }}">
+      <i class="bi bi-bookmark-check"></i> Borrowed
+    </a>
+
+    <a href="{{ url_for('student.fines') }}">
+      <i class="bi bi-currency-rupee"></i> Fines
+    </a>
+
+    <hr>
+
+    <!-- <a href="{{ url_for('auth.logout') }}">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </a> -->
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <div class="dashboard-panel">
+
+      <h4>Welcome, {{ current_user.username }} 👋</h4>
+
+      <!-- STATS (ADMIN COLORS) -->
+      <div class="stat-grid">
+        <div class="stat-card stat-purple">
+          <h6>Total Books</h6>
+          <h2>{{ total_books }}</h2>
+        </div>
+
+        <div class="stat-card stat-blue">
+          <h6>Borrowed</h6>
+          <h2>{{ borrowed_books }}</h2>
+        </div>
+
+        <div class="stat-card stat-red">
+          <h6>Overdue</h6>
+          <h2>{{ overdue_books }}</h2>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

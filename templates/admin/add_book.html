@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% block title %}Add Book{% endblock %}
+
+{% block content %}
+<h2>Add New Book</h2>
+
+<div class="glass-form-container">
+  <form method="POST" action="{{ url_for('admin.add_book') }}" class="book-form" enctype="multipart/form-data">
+
+    <!-- ISBN -->
+    <label>ISBN (optional)</label>
+    <input type="text" name="isbn" id="isbn" maxlength="20" placeholder="e.g. 9780132350884">
+
+    <!-- Book Cover -->
+    <label>Book Cover</label>
+
+    <div class="cover-preview-wrapper">
+      <img id="coverPreview" alt="Book Cover Preview">
+      <p id="coverStatus">Cover will be fetched automatically using ISBN</p>
+    </div>
+
+    <input type="file" name="cover_image" id="coverUpload" accept="image/*">
+
+    <!-- Title -->
+    <label>Title *</label>
+    <input type="text" name="title" required minlength="3" placeholder="Book title">
+
+    <!-- Author -->
+    <label>Author *</label>
+    <input type="text" name="author" required pattern="[A-Za-z ]{3,100}" title="Only letters and spaces allowed"
+      placeholder="Author name">
+
+    <!-- Publisher -->
+    <label>Publisher *</label>
+    <input type="text" name="publisher" required placeholder="Publisher name">
+
+    <!-- Year -->
+    <label>Publication Year *</label>
+    <input type="number" name="year" required min="1000" max="2099" placeholder="e.g. 2020">
+
+    <!-- Copies -->
+    <label>Total Copies *</label>
+    <input type="number" name="copies_total" value="1" min="1" required>
+
+    <!-- Category -->
+    <label>Category *</label>
+    <input type="text" name="category" required placeholder="Category">
+    <!--Rating-->
+    <label>Rating</label>
+    <select name="rating">
+      <option value="">Select rating</option>
+      <option value="1">⭐ 1</option>
+      <option value="2">⭐⭐ 2</option>
+      <option value="3">⭐⭐⭐ 3</option>
+      <option value="4">⭐⭐⭐⭐ 4</option>
+      <option value="5">⭐⭐⭐⭐⭐ 5</option>
+    </select>
+
+
+    <!-- Description -->
+    <label>Description</label>
+    <textarea name="description" rows="3" maxlength="500" placeholder="Optional description (max 500 chars)"></textarea>
+
+    <button type="submit">Add Book</button>
+  </form>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+  const isbnInput = document.getElementById("isbn");
+  const coverImg = document.getElementById("coverPreview");
+  const coverStatus = document.getElementById("coverStatus");
+  const coverUpload = document.getElementById("coverUpload");
+
+  coverUpload.style.display = "none";
+  coverImg.style.display = "none";
+
+  isbnInput.addEventListener("blur", () => {
+    const isbn = isbnInput.value.trim();
+    if (!isbn) return;
+
+    // ✅ CORRECT JavaScript string (NOT Python)
+    const coverUrl =
+      `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
+
+    const testImg = new Image();
+
+    testImg.onload = () => {
+      coverImg.src = coverUrl;
+      coverImg.style.display = "block";
+      coverUpload.style.display = "none";
+      coverStatus.innerText = "Cover fetched automatically ✔";
+    };
+
+    testImg.onerror = () => {
+      coverImg.style.display = "none";
+      coverUpload.style.display = "block";
+      coverStatus.innerText = "Cover not found. Please upload manually.";
+    };
+
+    testImg.src = coverUrl;
+  });
+</script>
+
+<!-- ================= STYLE ================= -->
+<style>
+  /* ---------- PAGE ---------- */
+  body {
+    background: linear-gradient(135deg, #2b5876, #4e4376);
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* ---------- HEADING ---------- */
+  h2 {
+    text-align: center;
+    margin: 30px 0;
+    color: white;
+  }
+
+  /* ---------- GLASS FORM ---------- */
+  .glass-form-container {
+    max-width: 520px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  /* ---------- FORM ---------- */
+  .book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .book-form label {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .book-form input,
+  .book-form textarea {
+    padding: 11px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .book-form input:focus,
+  .book-form textarea:focus {
+    box-shadow: 0 0 0 2px rgba(91, 155, 213, 0.7);
+  }
+
+  /* ---------- COVER ---------- */
+  .cover-preview-wrapper {
+    text-align: center;
+  }
+
+  .cover-preview-wrapper img {
+    max-width: 160px;
+    margin: 10px auto;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  #coverStatus {
+    font-size: 13px;
+    color: #eee;
+  }
+
+  /* ---------- BUTTON ---------- */
+  .book-form button {
+    margin-top: 10px;
+    padding: 12px;
+    background: rgba(91, 155, 213, 0.95);
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .book-form button:hover {
+    background: rgba(74, 134, 197, 1);
+    transform: translateY(-2px);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 600px) {
+    .glass-form-container {
+      padding: 18px;
+    }
+  }
+</style>
+{% endblock %}

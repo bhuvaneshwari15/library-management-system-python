@@ -1,0 +1,190 @@
+/* =====================================================
+   CSS VARIABLES & THEMES
+===================================================== */
+:root {
+  --bg: #f4f6f9;
+  --sidebar: #ffffff;
+  --card: #ffffff;
+  --text: #212529;
+  --accent: #6f42c1;
+}
+
+body.dark {
+  --bg: #121212;
+  --sidebar: #1e1e1e;
+  --card: #1f1f1f;
+  --text: #ffffff;
+}
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+body {
+  color: var(--text);
+}
+
+main {
+  background: var(--bg) !important;
+  max-width: 100% !important;
+}
+
+/* =====================================================
+   LAYOUT (DESKTOP)
+===================================================== */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+.sidebar {
+  width: 250px;
+  background: var(--sidebar);
+  padding: 20px;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar.collapsed span {
+  display: none;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.sidebar.collapsed a {
+  justify-content: center;
+}
+
+.sidebar.collapsed i {
+  font-size: 1.4rem;
+}
+
+.sidebar-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.toggle-btn,
+.theme-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+.main-wrapper {
+  flex: 1;
+  padding: 24px;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+.stat-card,
+.chart-card {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+/* =====================================================
+   CHARTS
+===================================================== */
+.chart-card {
+  height: 280px;
+}
+
+.chart-card canvas {
+  height: 100% !important;
+  max-height: 220px;
+}
+
+/* =====================================================
+   TABLES & BADGES
+===================================================== */
+.table {
+  background: var(--card);
+}
+
+.table th,
+.table td {
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.badge {
+  font-size: 0.85rem;
+}
+
+/* =====================================================
+   MOBILE & TABLET
+===================================================== */
+@media (max-width: 768px) {
+
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  /* Sidebar off-canvas */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 250px;
+    height: 100vh;
+    z-index: 1100;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.25);
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+
+  .main-wrapper {
+    padding: 16px;
+  }
+
+  .chart-card {
+    height: 240px;
+  }
+
+  .chart-card canvas {
+    max-height: 180px;
+  }
+}

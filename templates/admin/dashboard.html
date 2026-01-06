@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<!-- Admin CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-controls">
+      <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <i class="bi bi-list"></i>
+      </button>
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="bi bi-moon-fill" id="themeIcon"></i>
+      </button>
+    </div>
+
+    <h4><span>📚 Library Admin</span></h4>
+
+    <a href="{{ url_for('admin.dashboard') }}"
+       class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+      <i class="bi bi-speedometer2"></i><span>Dashboard</span>
+    </a>
+
+    <a href="{{ url_for('admin.books') }}">
+      <i class="bi bi-book"></i><span>Manage Books</span>
+    </a>
+
+    <a href="{{ url_for('admin.users') }}">
+      <i class="bi bi-people"></i><span>Manage Users</span>
+    </a>
+
+    <a href="{{ url_for('admin.recommendations') }}">
+      <i class="bi bi-lightbulb"></i>
+      <span>
+        Recommendations
+        {% if pending_recommendations|default(0) > 0 %}
+          <span class="badge bg-danger ms-2">{{ pending_recommendations }}</span>
+        {% endif %}
+      </span>
+    </a>
+
+    <a href="{{ url_for('admin.reports') }}">
+      <i class="bi bi-clipboard-data"></i><span>Reports</span>
+    </a>
+
+    <a href="{{ url_for('admin.export_full_report_pdf') }}">
+      <i class="bi bi-file-earmark-pdf"></i><span>Export Report (PDF)</span>
+    </a>
+
+    <hr>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+
+    <h4 class="mb-4">Dashboard Overview</h4>
+
+    <!-- KPI CARDS -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="stat-card">
+          <h6>Total Books</h6>
+          <h2>{{ total_books }}</h2>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card">
+          <h6>Total Users</h6>
+          <h2>{{ total_users }}</h2>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card">
+          <h6>Borrowed</h6>
+          <h2>{{ total_borrowed }}</h2>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card text-danger">
+          <h6>Overdue</h6>
+          <h2>{{ overdue }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="row g-4 mb-5">
+      <div class="col-lg-6">
+        <div class="chart-card">
+          <h6>📚 Book Status</h6>
+          <canvas id="statusChart"></canvas>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="chart-card">
+          <h6>👥 Users</h6>
+          <canvas id="usersChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  window.dashboardData = {
+    bookStatus: [
+      {{ total_available|default(0) }},
+      {{ total_borrowed|default(0) }},
+      {{ overdue|default(0) }}
+    ],
+    userRoles: [
+      {{ admin_count|default(0) }},
+      {{ teacher_count|default(0) }},
+      {{ student_count|default(0) }}
+    ]
+  };
+</script>
+
+<!-- Admin Dashboard JS -->
+<script src="{{ url_for('static', filename='js/admin-dashboard.js') }}"></script>
+
+{% endblock %}
