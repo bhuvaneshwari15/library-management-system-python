@@ -60,19 +60,17 @@
     margin-bottom: 15px;
   }
 
-.books-row {
-  display: flex;
-  gap: 22px;
-  overflow-x: auto;
+  .books-row {
+    display: flex;
+    gap: 22px;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.books-row::-webkit-scrollbar {
-  display: none;
-}
-
+  .books-row::-webkit-scrollbar {
+    display: none;
+  }
 
   .book-card {
     width: 190px;
@@ -82,17 +80,46 @@
     padding: 16px;
     text-align: center;
     flex-shrink: 0;
-
     display: flex;
     flex-direction: column;
   }
-
 
   .book-cover {
     width: 115px;
     height: 170px;
     object-fit: cover;
     border-radius: 10px;
+  }
+
+  .book-info {
+    flex-grow: 1;
+  }
+
+  .book-title {
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  .book-author {
+    font-size: 14px;
+    color: #666;
+  }
+
+  /* ⭐ Ratings */
+  .rating {
+    margin-top: 6px;
+    font-size: 15px;
+    color: #fbc02d;
+  }
+
+  .rating span {
+    color: #ccc;
+  }
+
+  .rating-text {
+    font-size: 12px;
+    color: #666;
+    margin-top: 2px;
   }
 
   .btn {
@@ -103,99 +130,40 @@
     color: white;
     border-radius: 18px;
     text-decoration: none;
+    font-size: 14px;
   }
 
-  .book-info {
-    flex-grow: 1;
+  .btn-disabled {
+    background: #aaa;
+    cursor: not-allowed;
   }
 
-  .btn,
-  .text-muted {
-    margin-top: auto;
-  }
-  /* ============================= */
-/* 📱 Mobile devices (≤ 576px)   */
-/* ============================= */
-@media (max-width: 576px) {
-  .search-form {
-    flex-direction: column;
-    gap: 12px;
-  }
+  /* 📱 Mobile */
+  @media (max-width: 576px) {
+    .search-form {
+      flex-direction: column;
+      gap: 12px;
+    }
 
-  .search-form input,
-  .category-filter {
-    width: 100%;
-    border-radius: 30px;
-  }
+    .search-form input,
+    .category-filter {
+      width: 100%;
+      border-radius: 30px;
+    }
 
-  .content {
-    padding: 0 15px;
-  }
+    h2 {
+      font-size: 24px;
+    }
 
-  h2 {
-    font-size: 24px;
-  }
+    .book-card {
+      width: 150px;
+    }
 
-  .category-title {
-    font-size: 18px;
+    .book-cover {
+      width: 95px;
+      height: 140px;
+    }
   }
-
-  .book-card {
-    width: 150px;
-    padding: 12px;
-  }
-
-  .book-cover {
-    width: 95px;
-    height: 140px;
-  }
-
-  .btn {
-    font-size: 12px;
-    padding: 6px 14px;
-  }
-}
-
-/* ============================= */
-/* 📱 Tablets (577px – 768px)   */
-/* ============================= */
-@media (min-width: 577px) and (max-width: 768px) {
-  .content {
-    padding: 0 20px;
-  }
-
-  .book-card {
-    width: 165px;
-  }
-
-  .book-cover {
-    width: 105px;
-    height: 155px;
-  }
-}
-
-/* ============================= */
-/* 💻 Small laptops (769px – 992px) */
-/* ============================= */
-@media (min-width: 769px) and (max-width: 992px) {
-  .content {
-    padding: 0 25px;
-  }
-
-  .book-card {
-    width: 175px;
-  }
-}
-
-/* ============================= */
-/* 🖥️ Large screens (≥ 1200px) */
-/* ============================= */
-@media (min-width: 1200px) {
-  .content {
-    max-width: 1600px;
-  }
-}
-
 </style>
 
 <div class="page-wrapper">
@@ -208,7 +176,7 @@
       <select id="categoryFilter" class="category-filter">
         <option value="">All Categories</option>
         {% for category in categorized_books.keys() %}
-        <option value="{{ category }}" {% if selected_category==category %}selected{% endif %}>
+        <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
           {{ category }}
         </option>
         {% endfor %}
@@ -221,23 +189,50 @@
         <div>
           <div class="category-title">{{ category }}</div>
           <div class="books-row">
+
             {% for book in books %}
             <div class="book-card">
+
               <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-L.jpg"
-                onerror="this.src='https://via.placeholder.com/115x170?text=No+Cover'" class="book-cover">
+                   onerror="this.src='https://via.placeholder.com/115x170?text=No+Cover'"
+                   class="book-cover">
+
               <div class="book-info">
                 <div class="book-title">{{ book.title }}</div>
                 <div class="book-author">{{ book.author }}</div>
+
+                {% if book.rating %}
+                <div class="rating">
+                  {% set full = book.rating|int %}
+                  {% set half = 1 if book.rating - full >= 0.5 else 0 %}
+                  {% set empty = 5 - full - half %}
+
+                  {% for i in range(full) %}★{% endfor %}
+                  {% if half %}☆{% endif %}
+                  {% for i in range(empty) %}<span>★</span>{% endfor %}
+                </div>
+
+                <div class="rating-text">
+                  {{ book.rating|round(1) }}/5 ({{ book.rating_count }} reviews)
+                </div>
+                {% else %}
+                <div class="rating-text">No ratings yet</div>
+                {% endif %}
               </div>
 
               {% if book.copies_available > 0 %}
-              <a href="{{ url_for('student.borrow_book', book_id=book.id) }}" class="btn">Borrow</a>
+              <a href="{{ url_for('student.borrow_book', book_id=book.id) }}" class="btn">
+                Borrow
+              </a>
               {% else %}
-              <button class="btn btn-disabled" disabled>Not Available</button>
-              <!-- <div style="color:#888;">Out of stock</div> -->
+              <button class="btn btn-disabled" disabled>
+                Not Available
+              </button>
               {% endif %}
+
             </div>
             {% endfor %}
+
           </div>
         </div>
         {% endfor %}
