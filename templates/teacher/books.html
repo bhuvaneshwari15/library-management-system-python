@@ -61,7 +61,7 @@ h2 {
 }
 
 /* ===============================
-   GRID (COLUMN-WISE)
+   GRID
 ================================ */
 .book-grid {
   display: grid;
@@ -101,12 +101,28 @@ h2 {
 .book-author {
   font-size: 13px;
   color: #555;
-  margin-bottom: 6px;
 }
 
 .book-meta {
   font-size: 13px;
   color: #777;
+  margin-bottom: 6px;
+}
+
+/* ⭐ RATINGS */
+.rating {
+  margin: 6px 0 2px;
+  font-size: 15px;
+  color: #fbc02d;
+}
+
+.rating span {
+  color: #ccc;
+}
+
+.rating-text {
+  font-size: 12px;
+  color: #666;
 }
 
 /* ACTION */
@@ -128,21 +144,15 @@ h2 {
    RESPONSIVE
 ================================ */
 @media (max-width: 1200px) {
-  .book-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  .book-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .book-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .book-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 576px) {
-  .book-grid {
-    grid-template-columns: 1fr;
-  }
+  .book-grid { grid-template-columns: 1fr; }
 }
 </style>
 
@@ -182,6 +192,25 @@ h2 {
 
             <div class="book-title">{{ book.title }}</div>
             <div class="book-author">{{ book.author }}</div>
+
+            <!-- ⭐ Rating -->
+            {% if book.rating %}
+              <div class="rating">
+                {% set full = book.rating|int %}
+                {% set half = 1 if book.rating - full >= 0.5 else 0 %}
+                {% set empty = 5 - full - half %}
+
+                {% for i in range(full) %}★{% endfor %}
+                {% if half %}☆{% endif %}
+                {% for i in range(empty) %}<span>★</span>{% endfor %}
+              </div>
+              <div class="rating-text">
+                {{ book.rating|round(1) }}/5 ({{ book.rating_count }} reviews)
+              </div>
+            {% else %}
+              <div class="rating-text">No ratings yet</div>
+            {% endif %}
+
             <div class="book-meta">{{ book.copies_available }} copies</div>
 
             {% if book.copies_available > 0 %}
